@@ -55,11 +55,12 @@ abstract class SpawnAble implements ISpawnAble
 
     public function __construct(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes)
     {
+        $this->attributeSettings = $attributeSettings;
+
         if (!$this->isHuman() && $attributeSettings->isCustomEntity()) {
             CustomEntityUtils::updateStaticPacketCache($attributeSettings->getNetworkId(), $attributeSettings->getBehaviorId());
         }
 
-        $this->attributeSettings = $attributeSettings;
         $this->humanSettings = $humanAttributes;
         $this->actorRID = Entity::nextRuntimeId();
     }
