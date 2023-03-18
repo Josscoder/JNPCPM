@@ -10,27 +10,6 @@ class NPCSkinUtils
 {
 
     /**
-     * @throws JsonException
-     * @throws NPCException
-     */
-    public static function fromSkinPathAndGeometry(string $skinPath, string $geometryPath, string $geometryName): Skin
-    {
-        try {
-            $skin = self::fromSkinPath($skinPath);
-        } catch (NPCException $e) {
-            throw new NPCException('Invalid Skin Data: ', $e->getMessage());
-        }
-
-        return new Skin(
-            $skin->getSkinId(),
-            $skin->getSkinData(),
-            "",
-            $geometryName,
-            file_get_contents($geometryPath)
-        );
-    }
-
-    /**
      * @throws NPCException
      */
     public static function fromSkinPath(string $skinPath): Skin
@@ -63,10 +42,30 @@ class NPCSkinUtils
 
     /**
      * @throws NPCException
+     * @throws JsonException
+     */
+    public static function fromSkinPathAndGeometry(string $skinPath, string $geometryPath, string $geometryName): Skin
+    {
+        try {
+            $skin = self::fromSkinPath($skinPath);
+        } catch (NPCException $e) {
+            throw new NPCException('Invalid Skin Data: ', $e->getMessage());
+        }
+
+        return new Skin(
+            $skin->getSkinId(),
+            $skin->getSkinData(),
+            "",
+            $geometryName,
+            file_get_contents($geometryPath)
+        );
+    }
+
+    /**
+     * @throws NPCException
      */
     public static function invisibleSkin(): Skin
     {
-        $skin = null;
         try {
             $skin = new Skin(
                 'Standard_Custom',
