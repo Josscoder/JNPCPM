@@ -85,8 +85,10 @@ abstract class SpawnAble implements ISpawnAble
     public function updateMetadata(array $metadata): void
     {
         foreach ($this->viewerList as $viewer) {
-            $packet = SetActorDataPacket::create($this->actorRID, $metadata, new PropertySyncData([], []), 0);
-            $viewer->getNetworkSession()->sendDataPacket($packet);
+            if (!is_null($viewer)) {
+                $packet = SetActorDataPacket::create($this->actorRID, $metadata, new PropertySyncData([], []), 0);
+                $viewer->getNetworkSession()->sendDataPacket($packet);
+            }
         }
     }
 

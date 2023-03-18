@@ -90,8 +90,10 @@ class NPC extends SpawnAble
     public function reloadLines(): void
     {
         foreach ($this->viewerList as $viewer) {
-            $this->hideLines($viewer);
-            $this->spawnLines($viewer);
+            if (!is_null($viewer)) {
+                $this->hideLines($viewer);
+                $this->spawnLines($viewer);
+            }
         }
     }
 
