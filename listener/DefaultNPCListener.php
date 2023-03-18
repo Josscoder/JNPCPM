@@ -5,6 +5,7 @@ namespace JNPC\listener;
 use JNPC\factory\NPCFactory;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
+use pocketmine\event\player\PlayerEntityInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -46,17 +47,12 @@ class DefaultNPCListener implements NPCListener
         NPCFactory::getInstance()->showWorldNPCS($to->getWorld(), $entity);
     }
 
-    public function onLeftClickEntity(EntityDamageByEntityEvent $event): void
+    public function onLeftClickEntity(PlayerEntityInteractEvent $event): void
     {
-        $damager = $event->getDamager();
-        if (!($damager instanceof Player)) {
-            return;
-        }
-
         var_dump('onLeftClickEntity');
         var_dump($event->getEntity()->getId());
 
-        NPCFactory::getInstance()->handleNPCController($event->getEntity()->getId(), $damager);
+        NPCFactory::getInstance()->handleNPCController($event->getEntity()->getId(), $event->getPlayer());
     }
 
     public function onRightClickEntity(DataPacketReceiveEvent $event): void
@@ -67,11 +63,14 @@ class DefaultNPCListener implements NPCListener
         }
 
         if ($packet->requestId != InventoryTransactionPacket::TYPE_USE_ITEM_ON_ENTITY) {
+            var_dump('no es type use item, es ');
+            var_dump($packet->requestId);
             return;
         }
 
         $data = $packet->trData;
         if (!($data instanceof UseItemOnEntityTransactionData)) {
+            var_dump('no es use item on entity');
             return;
         }
 
