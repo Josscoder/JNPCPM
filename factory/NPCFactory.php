@@ -48,8 +48,8 @@ class NPCFactory
 
     public function filterByWorld(World $world): array
     {
-        return $this->filter(function ($npc) use ($world) {
-            return $npc->getWorld() === $world;
+        return $this->filter(function (int $index, NPC $npc) use ($world) {
+            return $npc->getAttributeSettings()->getLocation()->getWorld() === $world;
         });
     }
 
@@ -71,7 +71,7 @@ class NPCFactory
 
     public function handleNPCController(int $actorRID, Player $player): void
     {
-        $npcs = $this->filter(function (NPC $npc) use ($actorRID) {
+        $npcs = $this->filter(function (int $index, NPC $npc) use ($actorRID) {
             return $npc->getActorRID() === $actorRID;
         });
 
