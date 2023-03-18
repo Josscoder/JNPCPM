@@ -6,6 +6,7 @@ use JNPC\settings\AttributeSettings;
 use pocketmine\network\mcpe\protocol\types\entity\ByteMetadataProperty;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
+use pocketmine\network\mcpe\protocol\types\entity\FloatMetadataProperty;
 use pocketmine\network\mcpe\protocol\types\entity\IntMetadataProperty;
 use pocketmine\network\mcpe\protocol\types\entity\StringMetadataProperty;
 use pocketmine\player\Player;
@@ -44,7 +45,7 @@ class Line extends SpawnAble
             EntityMetadataProperties::ALWAYS_SHOW_NAMETAG => new ByteMetadataProperty(1),
             EntityMetadataProperties::LEAD_HOLDER_EID => new IntMetadataProperty(-1),
             EntityMetadataProperties::BOUNDING_BOX_WIDTH => new IntMetadataProperty(0),
-            EntityMetadataProperties::SCALE => new IntMetadataProperty(0.004)
+            EntityMetadataProperties::SCALE => new FloatMetadataProperty(0.004)
         ]);
 
         parent::show($player);
