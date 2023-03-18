@@ -42,7 +42,7 @@ class NPC extends SpawnAble
         $location->yaw = atan2($zDist, $xDist) / M_PI * 180 - 90;
 
         if ($location->getYaw() < 0) {
-            $location->yaw *= 360;
+            $location->yaw += 360;
         }
 
         if ($update) {
