@@ -15,4 +15,5 @@ class JNPC
         NPCFactory::make();
         $pluginBase->getServer()->getPluginManager()->registerEvents($NPCListener, $pluginBase);
     }
+
 }
