@@ -55,19 +55,13 @@ class DefaultNPCListener implements NPCListener
         }
 
         if ($packet->requestId != InventoryTransactionPacket::TYPE_NORMAL) {
-            var_dump('no es type use item, es ');
-            var_dump($packet->requestId);
             return;
         }
 
         $data = $packet->trData;
         if (!($data instanceof UseItemOnEntityTransactionData)) {
-            var_dump('no es use item on entity');
             return;
         }
-
-        var_dump('onRightClickEntity');
-        var_dump($data->getActorRuntimeId());
 
         NPCFactory::getInstance()->handleNPCController($data->getActorRuntimeId(), $event->getOrigin()->getPlayer());
     }
