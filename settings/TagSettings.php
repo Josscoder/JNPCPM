@@ -50,6 +50,8 @@ class TagSettings
 
     public function adjust(): void
     {
+        $this->lines = array_reverse($this->lines);
+
         $attributeSettings = $this->linkedNPC->getAttributeSettings();
 
         $i = 0;
