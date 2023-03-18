@@ -15,7 +15,7 @@ class NPC extends SpawnAble
 
     private TagSettings $tagSettings;
 
-    private function __construct(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes)
+    public function __construct(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes)
     {
         parent::__construct($attributeSettings, $humanAttributes);
 
