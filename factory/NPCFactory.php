@@ -76,20 +76,25 @@ class NPCFactory
         });
 
         if (empty($npcs)) {
+            var_dump('empty');
             return;
         }
 
         /** @var NPC $npcToHandle */
         $npcToHandle = array_key_first($npcs);
         if (is_null($npcToHandle)) {
+            var_dump('null');
             return;
         }
 
         $controller = $npcToHandle->getAttributeSettings()->getController();
         if (is_null($controller)) {
+            var_dump('null1');
             return;
         }
 
         $controller($npcToHandle, $player);
+
+        var_dump('controlled');
     }
 }

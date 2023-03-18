@@ -53,6 +53,9 @@ class DefaultNPCListener implements NPCListener
             return;
         }
 
+        var_dump('onLeftClickEntity');
+        var_dump($event->getEntity()->getId());
+
         NPCFactory::getInstance()->handleNPCController($event->getEntity()->getId(), $damager);
     }
 
@@ -72,6 +75,9 @@ class DefaultNPCListener implements NPCListener
             return;
         }
 
+        var_dump('onRightClickEntity');
+        var_dump($data->getActorRuntimeId());
+
         NPCFactory::getInstance()->handleNPCController($data->getActorRuntimeId(), $event->getOrigin()->getPlayer());
     }
 
@@ -86,6 +92,8 @@ class DefaultNPCListener implements NPCListener
             if (!$npc->getAttributeSettings()->isKeepLooking()) {
                 continue;
             }
+
+            var_dump('looking');
 
             $npc->lookAt($player->getLocation()->asVector3(), true);
         }
