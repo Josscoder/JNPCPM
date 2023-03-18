@@ -8,7 +8,5 @@ use pocketmine\event\server\DataPacketReceiveEvent;
 
 interface IClickAble
 {
-    public function onLeftClickEntity(PlayerEntityInteractEvent $event): void;
-
-    public function onRightClickEntity(DataPacketReceiveEvent $event): void;
+    public function onClickEntity(DataPacketReceiveEvent $event): void;
 }

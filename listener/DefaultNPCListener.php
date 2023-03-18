@@ -47,22 +47,14 @@ class DefaultNPCListener implements NPCListener
         NPCFactory::getInstance()->showWorldNPCS($to->getWorld(), $entity);
     }
 
-    public function onLeftClickEntity(PlayerEntityInteractEvent $event): void
-    {
-        var_dump('onLeftClickEntity');
-        var_dump($event->getEntity()->getId());
-
-        NPCFactory::getInstance()->handleNPCController($event->getEntity()->getId(), $event->getPlayer());
-    }
-
-    public function onRightClickEntity(DataPacketReceiveEvent $event): void
+    public function onClickEntity(DataPacketReceiveEvent $event): void
     {
         $packet = $event->getPacket();
         if (!($packet instanceof InventoryTransactionPacket)) {
             return;
         }
 
-        if ($packet->requestId != InventoryTransactionPacket::TYPE_USE_ITEM_ON_ENTITY) {
+        if ($packet->requestId != InventoryTransactionPacket::TYPE_NORMAL) {
             var_dump('no es type use item, es ');
             var_dump($packet->requestId);
             return;
