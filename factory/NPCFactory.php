@@ -59,7 +59,7 @@ class NPCFactory
      */
     public function filter(callable $callable): array
     {
-        return array_filter($this->npcList, $callable, ARRAY_FILTER_USE_KEY);
+        return array_filter($this->npcList, $callable, ARRAY_FILTER_USE_BOTH);
     }
 
     public function showWorldNPCS(World $world, Player $player): void
