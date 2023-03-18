@@ -129,7 +129,7 @@ abstract class SpawnAble implements ISpawnAble
                 null,
                 $location->getPitch(),
                 $location->getYaw(),
-                0,
+                $location->getYaw(),
                 new ItemStackWrapper(0, ItemStack::null()),
                 GameMode::SURVIVAL,
                 $metadata,
@@ -160,7 +160,7 @@ abstract class SpawnAble implements ISpawnAble
                 null,
                 $location->getPitch(),
                 $location->getYaw(),
-                0,
+                $location->getYaw(),
                 0,
                 [],
                 $metadata,
@@ -184,8 +184,10 @@ abstract class SpawnAble implements ISpawnAble
             $location->asVector3(),
             $location->getPitch(),
             $location->getYaw(),
-            0,
-            MoveActorAbsolutePacket::FLAG_FORCE_MOVE_LOCAL_ENTITY
+            $location->getYaw(),
+            (
+                MoveActorAbsolutePacket::FLAG_FORCE_MOVE_LOCAL_ENTITY
+            )
         );
 
         foreach ($this->viewerList as $viewer) {
