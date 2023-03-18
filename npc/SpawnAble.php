@@ -185,7 +185,7 @@ abstract class SpawnAble implements ISpawnAble
             $location->getPitch(),
             $location->getYaw(),
             0,
-            MoveActorAbsolutePacket::FLAG_TELEPORT + MoveActorAbsolutePacket::FLAG_FORCE_MOVE_LOCAL_ENTITY
+            MoveActorAbsolutePacket::FLAG_FORCE_MOVE_LOCAL_ENTITY
         );
 
         foreach ($this->viewerList as $viewer) {

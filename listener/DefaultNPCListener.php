@@ -93,8 +93,6 @@ class DefaultNPCListener implements NPCListener
                 continue;
             }
 
-            var_dump('looking');
-
             $npc->lookAt($player->getLocation()->asVector3(), true);
         }
     }
