@@ -20,14 +20,8 @@ class NPCSkinUtils
 
         for ($y = 0; $y < imagesy($image); $y++) {
             for ($x = 0; $x < imagesx($image); $x++) {
-                $rgba = imagecolorat($image, $x, $y);
-
-                $a = ((~($rgba >> 24)) << 1) & 0xff;
-                $r = ($rgba >> 16) & 0xff;
-                $g = ($rgba >> 8) & 0xff;
-                $b = $rgba & 0xff;
-
-                $skinData .= chr($r) . chr($g) . chr($b) . chr($a);
+                $argb = imagecolorat($image, $x, $y);
+                $skinData .= chr(($argb >> 16) & 0xff) . chr(($argb >> 8) & 0xff) . chr($argb & 0xff) . chr(((~($argb >> 24)) << 1) & 0xff);
             }
         }
 
