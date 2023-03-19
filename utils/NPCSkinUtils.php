@@ -14,8 +14,22 @@ class NPCSkinUtils
      */
     public static function fromSkinPath(string $skinPath): Skin
     {
-        $skinData = imagecreatefromstring(file_get_contents($skinPath));
+        $image = imagecreatefrompng($skinPath);
 
+        $skinData = '';
+        for ($y = 0; $y < imagesy($image); $y++) {
+            for ($x = 0; $x < imagesx($image); $x++) {
+                $color = imagecolorat($image, $x, $y);
+                $r = ($color >> 16) & 0xff;
+                $g = ($color >> 8) & 0xff;
+                $b = $color & 0xff;
+                $a = ($color & 0x7f000000) >> 24;
+                $a = $a === 127 ? 0 : 255 - ($a << 1);
+                $skinData .= chr($r) . chr($g) . chr($b) . chr($a);
+            }
+        }
+
+        imagedestroy($image);
         try {
             $skin = new Skin("Standard_Custom", $skinData);
         } catch (JsonException $e) {
