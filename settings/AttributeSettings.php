@@ -24,7 +24,7 @@ class AttributeSettings
 
     private bool $keepLooking = false;
 
-    public static function make(): AttributeSettings
+    public static function builder(): AttributeSettings
     {
         return new AttributeSettings();
     }
