@@ -14,13 +14,13 @@ class NPCSkinUtils
      */
     public static function fromSkinPath(string $skinPath): Skin
     {
-        $image = @imagecreatefrompng($skinPath);
-        $skinData = "";
-        $l = (int)@getimagesize($skinPath)[1];
+        $skinData = '';
 
-        for ($y = 0; $y < $l; $y++) {
-            for ($x = 0; $x < 64; $x++) {
-                $rgba = @imagecolorat($image, $x, $y);
+        $image = imagecreatefrompng($skinPath);
+
+        for ($y = 0; $y < imagesy($image); $y++) {
+            for ($x = 0; $x < imagesx($image); $x++) {
+                $rgba = imagecolorat($image, $x, $y);
 
                 $a = ((~($rgba >> 24)) << 1) & 0xff;
                 $r = ($rgba >> 16) & 0xff;
