@@ -3,11 +3,8 @@
 namespace JNPC\npc;
 
 use JNPC\settings\AttributeSettings;
-use pocketmine\network\mcpe\protocol\types\entity\ByteMetadataProperty;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
-use pocketmine\network\mcpe\protocol\types\entity\FloatMetadataProperty;
-use pocketmine\network\mcpe\protocol\types\entity\IntMetadataProperty;
 use pocketmine\network\mcpe\protocol\types\entity\StringMetadataProperty;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -22,7 +19,12 @@ class Line extends SpawnAble
 
     public function __construct(string $name, int $separator = 1)
     {
-        parent::__construct(AttributeSettings::builder()->networkId(EntityIds::CREEPER), null);
+        parent::__construct(AttributeSettings::builder()
+            ->networkId(EntityIds::CREEPER)
+            ->boundingBoxWidth(0)
+            ->scale(0.004),
+            null
+        );
 
         $this->name = $name;
         $this->separator = $separator;
@@ -39,10 +41,6 @@ class Line extends SpawnAble
     {
         $this->mergeMetadata([
             EntityMetadataProperties::NAMETAG => new StringMetadataProperty(TextFormat::colorize($this->name)),
-            EntityMetadataProperties::ALWAYS_SHOW_NAMETAG => new ByteMetadataProperty(1),
-            EntityMetadataProperties::LEAD_HOLDER_EID => new IntMetadataProperty(-1),
-            EntityMetadataProperties::BOUNDING_BOX_WIDTH => new IntMetadataProperty(0),
-            EntityMetadataProperties::SCALE => new FloatMetadataProperty(0.004)
         ]);
 
         parent::show($player);

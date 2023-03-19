@@ -101,6 +101,17 @@ abstract class SpawnAble implements ISpawnAble
             EntityMetadataProperties::LEAD_HOLDER_EID => new IntMetadataProperty(-1),
             EntityMetadataProperties::SCALE => new FloatMetadataProperty($this->attributeSettings->getScale())
         ];
+
+        $bbHeight = $this->attributeSettings->getBoundingBoxHeight();
+        if (!is_null($bbHeight)) {
+            $metadata[EntityMetadataProperties::BOUNDING_BOX_HEIGHT] = new FloatMetadataProperty($bbHeight);
+        }
+
+        $bbWidth = $this->attributeSettings->getBoundingBoxWidth();
+        if (!is_null($bbWidth)) {
+            $metadata[EntityMetadataProperties::BOUNDING_BOX_WIDTH] = new FloatMetadataProperty($bbWidth);
+        }
+
         foreach ($this->mergeMetadataList as $key => $value) {
             $metadata[$key] = $value;
         }

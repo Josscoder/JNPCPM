@@ -22,6 +22,10 @@ class AttributeSettings
 
     private bool $keepLooking = false;
 
+    private ?float $boundingBoxHeight = null;
+
+    private ?float $boundingBoxWidth = null;
+
     public static function builder(): AttributeSettings
     {
         return new AttributeSettings();
@@ -104,4 +108,25 @@ class AttributeSettings
         return $this;
     }
 
+    public function getBoundingBoxHeight(): ?float
+    {
+        return $this->boundingBoxHeight;
+    }
+
+    public function boundingBoxHeight(?float $boundingBoxHeight): self
+    {
+        $this->boundingBoxHeight = $boundingBoxHeight;
+        return $this;
+    }
+
+    public function getBoundingBoxWidth(): ?float
+    {
+        return $this->boundingBoxWidth;
+    }
+
+    public function boundingBoxWidth(?float $boundingBoxWidth): self
+    {
+        $this->boundingBoxWidth = $boundingBoxWidth;
+        return $this;
+    }
 }
