@@ -80,7 +80,7 @@ class NPCFactory
         }
 
         /** @var NPC $npcToHandle */
-        $npcToHandle = array_values($npcs)[array_key_first($npcs)];
+        $npcToHandle = array_values($npcs)[0];
         if (is_null($npcToHandle)) {
             return;
         }
