@@ -15,13 +15,12 @@ class NPCSkinUtils
     public static function fromSkinPath(string $skinPath): Skin
     {
         $skinData = '';
-
         $image = imagecreatefrompng($skinPath);
-
         for ($y = 0; $y < imagesy($image); $y++) {
             for ($x = 0; $x < imagesx($image); $x++) {
                 $argb = imagecolorat($image, $x, $y);
-                $skinData .= chr(($argb >> 16) & 0xff) . chr(($argb >> 8) & 0xff) . chr($argb & 0xff) . chr(((~($argb >> 24)) << 1) & 0xff);
+                $rgba = (($argb >> 16) & 0xff) . (($argb >> 8) & 0xff) . ($argb & 0xff) . ((~($argb >> 24)) & 0xff);
+                $skinData .= $rgba;
             }
         }
 
