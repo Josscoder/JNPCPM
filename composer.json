@@ -2,6 +2,11 @@
   "name": "josscoder/jnpc",
   "description": "Library to manage npcs on your PocketMine server",
   "type": "library",
+  "require": {
+    "php": "^8.2",
+    "ramsey/uuid": "^4.7",
+    "ext-gd": "*"
+  },
   "autoload": {
     "psr-4": {
       "JNPC\\": "/"
@@ -12,10 +17,5 @@
       "name": "Josscoder",
       "email": "josscoder@hotmail.com"
     }
-  ],
-  "require": {
-    "php": "^8.2",
-    "ramsey/uuid": "^4.7",
-    "ext-gd": "*"
-  }
+  ]
 }
