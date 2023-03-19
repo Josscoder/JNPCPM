@@ -24,12 +24,17 @@ class AttributeSettings
 
     private bool $keepLooking = false;
 
+    public static function make(): AttributeSettings
+    {
+        return new AttributeSettings();
+    }
+
     public function getNetworkId(): string
     {
         return $this->networkId;
     }
 
-    public function setNetworkId(string $networkId): self
+    public function networkId(string $networkId): self
     {
         $this->networkId = $networkId;
         return $this;
@@ -40,7 +45,7 @@ class AttributeSettings
         return $this->behaviorId;
     }
 
-    public function setBehaviorId(string $behaviorId): self
+    public function behaviorId(string $behaviorId): self
     {
         $this->behaviorId = $behaviorId;
         return $this;
@@ -51,7 +56,7 @@ class AttributeSettings
         return $this->customEntity;
     }
 
-    public function setCustomEntity(bool $customEntity): self
+    public function customEntity(bool $customEntity): self
     {
         $this->customEntity = $customEntity;
         return $this;
@@ -62,7 +67,7 @@ class AttributeSettings
         return $this->location;
     }
 
-    public function setLocation(Location $location): self
+    public function location(Location $location): self
     {
         $this->location = $location;
         return $this;
@@ -73,7 +78,7 @@ class AttributeSettings
         return $this->scale;
     }
 
-    public function setScale(float $scale): self
+    public function scale(float $scale): self
     {
         $this->scale = $scale;
         return $this;
@@ -84,7 +89,7 @@ class AttributeSettings
         return $this->boundingBoxHeight;
     }
 
-    public function setBoundingBoxHeight(float $boundingBoxHeight): self
+    public function boundingBoxHeight(float $boundingBoxHeight): self
     {
         $this->boundingBoxHeight = $boundingBoxHeight;
         return $this;
@@ -95,7 +100,7 @@ class AttributeSettings
         return $this->controller;
     }
 
-    public function setController(?Closure $controller): self
+    public function controller(?Closure $controller): self
     {
         $this->controller = $controller;
         return $this;
@@ -106,7 +111,7 @@ class AttributeSettings
         return $this->keepLooking;
     }
 
-    public function setKeepLooking(bool $keepLooking): self
+    public function keepLooking(bool $keepLooking): self
     {
         $this->keepLooking = $keepLooking;
         return $this;
