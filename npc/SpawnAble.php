@@ -216,6 +216,14 @@ abstract class SpawnAble implements ISpawnAble
         unset($this->viewerList[array_search($player, $this->viewerList, true)]);
     }
 
+    /**
+     * @return Player[]
+     */
+    public function getViewerList(): array
+    {
+        return $this->viewerList;
+    }
+
     public function getActorRID(): int
     {
         return $this->actorRID;
