@@ -12,6 +12,11 @@ class HumanAttributes
 
     private Item $handItem;
 
+    public static function builder(): HumanAttributes
+    {
+        return new HumanAttributes();
+    }
+
     public function getSkin(): Skin
     {
         return $this->skin;
