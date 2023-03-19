@@ -22,10 +22,7 @@ class Line extends SpawnAble
 
     public function __construct(string $name, int $separator = 1)
     {
-        $attributeSettings = new AttributeSettings();
-        $attributeSettings->setNetworkId(EntityIds::CREEPER);
-
-        parent::__construct($attributeSettings, null);
+        parent::__construct(AttributeSettings::builder()->networkId(EntityIds::CREEPER), null);
 
         $this->name = $name;
         $this->separator = $separator;

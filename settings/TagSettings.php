@@ -15,11 +15,24 @@ class TagSettings
      */
     private array $lines = [];
 
+    private float $height = 1.8;
+
     private NPC $linkedNPC;
 
     public function addLine(Line $line): self
     {
         $this->lines[] = $line;
+        return $this;
+    }
+
+    public function getHeight(): float
+    {
+        return $this->height;
+    }
+
+    public function height(float $height): self
+    {
+        $this->height = $height;
         return $this;
     }
 
@@ -32,7 +45,7 @@ class TagSettings
             $lineLoc = null;
 
             if ($i == 0) {
-                $lineLoc = $location->add(0, $attributeSettings->getBoundingBoxHeight(), 0);
+                $lineLoc = $location->add(0, $this->height, 0);
             } else {
                 $lineLoc = $this->getLine($i - 1)->getAttributeSettings()->getLocation()->add(0, (self::ONE_BREAK_LINE * $line->getSeparator()), 0);
             }
@@ -61,12 +74,12 @@ class TagSettings
             $location = null;
 
             if ($i == 0) {
-                $location = $attributeSettings->getLocation()->add(0, $this->linkedNPC->getAttributeSettings()->getBoundingBoxHeight(), 0);
+                $location = $attributeSettings->getLocation()->add(0, $this->height, 0);
             } else {
                 $location = $this->getLine($i - 1)->getAttributeSettings()->getLocation()->add(0, (self::ONE_BREAK_LINE * $line->getSeparator()), 0);
             }
 
-            $line->getAttributeSettings()->setLocation(Location::fromObject($location, $attributeSettings->getLocation()->getWorld()));
+            $line->getAttributeSettings()->location(Location::fromObject($location, $attributeSettings->getLocation()->getWorld()));
 
             ++$i;
         }

@@ -178,7 +178,7 @@ abstract class SpawnAble implements ISpawnAble
 
     public function move(Location $location): void
     {
-        $this->attributeSettings->setLocation($location);
+        $this->attributeSettings->location($location);
 
         $packet = MoveActorAbsolutePacket::create($this->actorRID,
             $location->asVector3(),

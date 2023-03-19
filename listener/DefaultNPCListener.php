@@ -3,9 +3,7 @@
 namespace JNPC\listener;
 
 use JNPC\factory\NPCFactory;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
-use pocketmine\event\player\PlayerEntityInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;

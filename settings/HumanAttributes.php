@@ -17,7 +17,7 @@ class HumanAttributes
         return $this->skin;
     }
 
-    public function setSkin(Skin $skin): self
+    public function skin(Skin $skin): self
     {
         $this->skin = $skin;
         return $this;
@@ -28,7 +28,7 @@ class HumanAttributes
         return $this->handItem;
     }
 
-    public function setHandItem(Item $handItem): self
+    public function handItem(Item $handItem): self
     {
         $this->handItem = $handItem;
         return $this;

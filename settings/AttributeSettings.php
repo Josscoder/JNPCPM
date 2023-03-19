@@ -18,8 +18,6 @@ class AttributeSettings
 
     private float $scale = 1.0;
 
-    private float $boundingBoxHeight = 1.8;
-
     private ?Closure $controller = null;
 
     private bool $keepLooking = false;
@@ -81,17 +79,6 @@ class AttributeSettings
     public function scale(float $scale): self
     {
         $this->scale = $scale;
-        return $this;
-    }
-
-    public function getBoundingBoxHeight(): float
-    {
-        return $this->boundingBoxHeight;
-    }
-
-    public function boundingBoxHeight(float $boundingBoxHeight): self
-    {
-        $this->boundingBoxHeight = $boundingBoxHeight;
         return $this;
     }
 
