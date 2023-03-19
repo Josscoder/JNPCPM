@@ -23,11 +23,13 @@ class NPC extends SpawnAble
         $this->tagSettings->setLinkedNPC($this);
     }
 
-    public static function create(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes = null): NPC
+    public static function create(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes = null, bool $store = true): NPC
     {
         $npc = new NPC($attributeSettings, $humanAttributes);
 
-        NPCFactory::getInstance()->store($npc);
+        if ($store) {
+            NPCFactory::getInstance()->store($npc);
+        }
 
         return $npc;
     }
