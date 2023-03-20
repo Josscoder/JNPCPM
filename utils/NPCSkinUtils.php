@@ -15,17 +15,10 @@ class NPCSkinUtils
     public static function fromSkinPath(string $skinPath): Skin
     {
         $image = imagecreatefrompng($skinPath);
-        $skinData = '';
-        for ($y = 0; $y < imagesy($image); $y++) {
-            for ($x = 0; $x < imagesx($image); $x++) {
-                $argb = imagecolorat($image, $x, $y);
-                $a = (~($argb >> 24)) & 0xff; // Alpha channel
-                $r = ($argb >> 16) & 0xff; // Red channel
-                $g = ($argb >> 8) & 0xff; // Green channel
-                $b = $argb & 0xff; // Blue channel
-                $skinData .= chr($r) . chr($g) . chr($b) . chr($a);
-            }
-        }
+        ob_start();
+        imagepng($image);
+        $skinData = ob_get_clean();
+        imagedestroy($image);
 
         try {
             $skin = new Skin("Standard_Custom", $skinData);
