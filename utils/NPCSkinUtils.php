@@ -14,30 +14,8 @@ class NPCSkinUtils
      */
     public static function fromSkinPath(string $skinPath): Skin
     {
-        $image = imagecreatefrompng($skinPath);
-        ob_start();
-        imagepng($image);
-        $skinData = ob_get_clean();
-        imagedestroy($image);
-
-        $allowedSizes = Skin::ACCEPTED_SKIN_SIZES;
-        $dataSize = strlen($skinData);
-        if (!in_array($dataSize, $allowedSizes)) {
-            $newSize = 0;
-            foreach ($allowedSizes as $size) {
-                if ($dataSize > $size && $newSize < $size) {
-                    $newSize = $size;
-                }
-            }
-            if ($newSize == 0) {
-                throw new NPCException('Invalid Skin Data');
-            } else {
-                $skinData = str_pad(substr($skinData, 0, $newSize), $newSize, "\x00");
-            }
-        }
-
         try {
-            $skin = new Skin("Standard_Custom", $skinData);
+            $skin = new Skin("Standard_Custom", file_get_contents($skinPath));
         } catch (JsonException $e) {
             throw new NPCException('Invalid Skin Data: ', $e->getMessage());
         }
