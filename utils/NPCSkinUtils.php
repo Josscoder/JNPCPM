@@ -16,6 +16,7 @@ class NPCSkinUtils
     {
         $skinData = '';
         $image = imagecreatefrompng($skinPath);
+        imagepalettetotruecolor($image);
         for ($y = 0; $y < imagesy($image); $y++) {
             for ($x = 0; $x < imagesx($image); $x++) {
                 $rgba = imagecolorat($image, $x, $y);
