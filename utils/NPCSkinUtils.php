@@ -15,10 +15,14 @@ class NPCSkinUtils
     public static function fromSkinPath(string $skinPath): Skin
     {
         $skinData = file_get_contents($skinPath);
-        $skinBase64 = base64_encode($skinData);
+        $image = imagecreatefromstring($skinData);
+        ob_start(); //
+        imagepng($image);
+        $skinData = ob_get_clean();
+        imagedestroy($image);
 
         try {
-            $skin = new Skin("Standard_Custom", $skinBase64);
+            $skin = new Skin("Standard_Custom", $skinData);
         } catch (JsonException $e) {
             throw new NPCException('Invalid Skin Data: ', $e->getMessage());
         }
