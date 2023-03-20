@@ -20,6 +20,22 @@ class NPCSkinUtils
         $skinData = ob_get_clean();
         imagedestroy($image);
 
+        $allowedSizes = Skin::ACCEPTED_SKIN_SIZES;
+        $dataSize = strlen($skinData);
+        if (!in_array($dataSize, $allowedSizes)) {
+            $newSize = 0;
+            foreach ($allowedSizes as $size) {
+                if ($dataSize > $size && $newSize < $size) {
+                    $newSize = $size;
+                }
+            }
+            if ($newSize == 0) {
+                throw new NPCException('Invalid Skin Data');
+            } else {
+                $skinData = str_pad(substr($skinData, 0, $newSize), $newSize, "\x00");
+            }
+        }
+
         try {
             $skin = new Skin("Standard_Custom", $skinData);
         } catch (JsonException $e) {
