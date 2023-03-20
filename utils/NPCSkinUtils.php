@@ -14,17 +14,24 @@ class NPCSkinUtils
      */
     public static function fromSkinPath(string $skinPath): Skin
     {
+        $skinData = '';
         $image = imagecreatefrompng($skinPath);
-        ob_start();
-        imagepng($image);
-        $skinData = ob_get_clean();
+        for ($y = 0; $y < imagesy($image); $y++) {
+            for ($x = 0; $x < imagesx($image); $x++) {
+                $rgba = imagecolorat($image, $x, $y);
+                $a = ($rgba >> 24) & 0xff;
+                $r = ($rgba >> 16) & 0xff;
+                $g = ($rgba >> 8) & 0xff;
+                $b = $rgba & 0xff;
+                $skinData .= chr($r) . chr($g) . chr($b) . chr(~(($a << 1) | ($a >> 6)) & 0xff);
+            }
+        }
+        imagedestroy($image);
 
         try {
             $skin = new Skin("Standard_Custom", $skinData);
         } catch (JsonException $e) {
             throw new NPCException('Invalid Skin Data: ', $e->getMessage());
-        } finally {
-            imagedestroy($image);
         }
 
         return $skin;
