@@ -2,8 +2,8 @@
 
 namespace JNPC\settings;
 
-use JNPC\npc\Line;
-use JNPC\npc\NPC;
+use JNPC\entity\line\Line;
+use JNPC\entity\npc\NPC;
 use pocketmine\entity\Location;
 
 class TagSettings
@@ -58,7 +58,7 @@ class TagSettings
 
     public function getLine(int $index): Line
     {
-        return array_values($this->lines)[$index];
+        return array_values($this->lines)[max(count($this->lines) - $index - 1, 0)];
     }
 
     public function adjust(): void

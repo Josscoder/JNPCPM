@@ -1,6 +1,6 @@
 <?php
 
-namespace JNPC\npc;
+namespace JNPC\entity\spawnable;
 
 use pocketmine\entity\Location;
 use pocketmine\player\Player;

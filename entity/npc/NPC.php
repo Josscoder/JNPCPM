@@ -1,7 +1,8 @@
 <?php
 
-namespace JNPC\npc;
+namespace JNPC\entity\npc;
 
+use JNPC\entity\spawnable\SpawnAble;
 use JNPC\factory\NPCFactory;
 use JNPC\settings\AttributeSettings;
 use JNPC\settings\HumanAttributes;

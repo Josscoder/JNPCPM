@@ -1,6 +1,6 @@
 <?php
 
-namespace JNPC\npc;
+namespace JNPC\entity\spawnable;
 
 use JNPC\settings\AttributeSettings;
 use JNPC\settings\HumanAttributes;
@@ -87,10 +87,15 @@ abstract class SpawnAble implements ISpawnAble
     {
         foreach ($this->viewerList as $viewer) {
             if (!is_null($viewer)) {
-                $packet = SetActorDataPacket::create($this->actorRID, $metadata, new PropertySyncData([], []), 0);
-                $viewer->getNetworkSession()->sendDataPacket($packet);
+                $this->updateMetadataForPlayer($metadata, $viewer);
             }
         }
+    }
+
+    public function updateMetadataForPlayer(array $metadata, Player $player): void
+    {
+        $packet = SetActorDataPacket::create($this->actorRID, $metadata, new PropertySyncData([], []), 0);
+        $player->getNetworkSession()->sendDataPacket($packet);
     }
 
     public function show(Player $player): void

@@ -2,7 +2,7 @@
 
 namespace JNPC\factory;
 
-use JNPC\npc\NPC;
+use JNPC\entity\npc\NPC;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\world\World;
