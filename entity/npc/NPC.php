@@ -39,17 +39,25 @@ class NPC extends SpawnAble
     {
         $location = $this->attributeSettings->getLocation();
 
-        $xDist = ($vector->getX() - $location->getX());
-        $zDist = ($vector->getZ() - $location->getZ());
+        $horizontal = sqrt(($vector->x - $location->x) ** 2 + ($vector->z - $location->z) ** 2);
+        $vertical = $vector->y - $location->y;
+        $pitch = -atan2($vertical, $horizontal) / M_PI * 180;
 
-        $location->yaw = atan2($zDist, $xDist) / M_PI * 180 - 90;
+        $xDist = $vector->x - $location->x;
+        $zDist = $vector->z - $location->z;
 
-        if ($location->getYaw() < 0) {
-            $location->yaw += 360;
+        $yaw = atan2($zDist, $xDist) / M_PI * 180 - 90;
+        if ($yaw < 0) {
+            $yaw += 360.0;
         }
+
+        $location->yaw = $yaw;
+        $location->pitch = $pitch;
 
         if ($update) {
             $this->move($location);
+        } else {
+            $this->attributeSettings->location($location);
         }
     }
 

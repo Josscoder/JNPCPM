@@ -10,9 +10,14 @@ use pocketmine\plugin\PluginBase;
 class JNPC
 {
 
-    public static function init(PluginBase $pluginBase, Listener $NPCListener = new DefaultNPCListener()): void
+    public static function init(PluginBase $pluginBase = null, Listener $NPCListener = new DefaultNPCListener()): void
     {
         NPCFactory::make();
+
+        if (is_null($pluginBase)) {
+            return;
+        }
+
         $pluginBase->getServer()->getPluginManager()->registerEvents($NPCListener, $pluginBase);
     }
 

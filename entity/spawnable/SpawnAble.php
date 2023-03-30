@@ -12,6 +12,7 @@ use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
+use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\network\mcpe\protocol\SetActorDataPacket;
@@ -196,15 +197,30 @@ abstract class SpawnAble implements ISpawnAble
     {
         $this->attributeSettings->location($location);
 
-        $packet = MoveActorAbsolutePacket::create($this->actorRID,
-            $location->asVector3(),
-            $location->getPitch(),
-            $location->getYaw(),
-            $location->getYaw(),
-            (
+        if ($this->isHuman()) {
+            $packet = MovePlayerPacket::create($this->actorRID,
+                $location->asVector3()->add(0, 1.6, 0),
+                $location->getPitch(),
+                $location->getYaw(),
+                $location->getYaw(),
+                MovePlayerPacket::MODE_NORMAL,
+                true,
+                0,
+                0,
+                0,
+                0
+            );
+        } else {
+            $packet = MoveActorAbsolutePacket::create($this->actorRID,
+                $location->asVector3(),
+                $location->getPitch(),
+                $location->getYaw(),
+                $location->getYaw(),
+                (
                 MoveActorAbsolutePacket::FLAG_FORCE_MOVE_LOCAL_ENTITY
-            )
-        );
+                )
+            );
+        }
 
         foreach ($this->viewerList as $viewer) {
             if (!is_null($viewer)) {

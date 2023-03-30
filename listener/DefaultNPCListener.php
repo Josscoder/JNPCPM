@@ -67,9 +67,15 @@ class DefaultNPCListener implements NPCListener
     public function onKeepLookingEntity(PlayerMoveEvent $event): void
     {
         $player = $event->getPlayer();
-        $location = $event->getTo();
 
-        $worldNPCS = NPCFactory::getInstance()->filterByWorld($location->getWorld());
+        $from = $event->getFrom();
+        $to = $event->getTo();
+
+        if ($from->distance($to) < 1.0) {
+            return;
+        }
+
+        $worldNPCS = NPCFactory::getInstance()->filterByWorld($player->getWorld());
 
         foreach ($worldNPCS as $npc) {
             if (!$npc->getAttributeSettings()->isKeepLooking()) {
