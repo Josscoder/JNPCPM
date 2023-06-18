@@ -38,10 +38,12 @@ class NPC extends SpawnAble
     public function showToWorldPlayers(): void
     {
         $location = $this->attributeSettings->getLocation();
-        if ($location->isValid()) {
-            foreach ($location->getWorld()->getPlayers() as $player) {
-                $this->show($player);
-            }
+        if (!$location->isValid()) {
+            return;
+        }
+
+        foreach ($location->getWorld()->getPlayers() as $player) {
+            $this->show($player);
         }
     }
 
