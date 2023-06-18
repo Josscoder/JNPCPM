@@ -62,6 +62,17 @@ class NPC extends SpawnAble
 
     public function lookAt(Vector3 $vector, true $update): void
     {
+        $location = $this->lookVector($vector);
+
+        if ($update) {
+            $this->move($location);
+        } else {
+            $this->attributeSettings->location($location);
+        }
+    }
+
+    public function lookVector(Vector3 $vector): Location
+    {
         $location = $this->attributeSettings->getLocation();
 
         $horizontal = sqrt(($vector->x - $location->x) ** 2 + ($vector->z - $location->z) ** 2);
@@ -79,11 +90,14 @@ class NPC extends SpawnAble
         $location->yaw = $yaw;
         $location->pitch = $pitch;
 
-        if ($update) {
-            $this->move($location);
-        } else {
-            $this->attributeSettings->location($location);
-        }
+        return $location;
+    }
+
+    public function keepLooking(Vector3 $vector, Player $player): void
+    {
+        $location = $this->lookVector($vector);
+        $packet = $this->getMovePacket($location);
+        $player->getNetworkSession()->sendDataPacket($packet);
     }
 
     public function move(Location $location): void

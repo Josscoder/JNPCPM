@@ -11,6 +11,8 @@ use pocketmine\entity\Location;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
+use pocketmine\network\mcpe\protocol\ClientboundPacket;
+use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
@@ -202,6 +204,15 @@ abstract class SpawnAble implements ISpawnAble
     {
         $this->attributeSettings->location($location);
 
+        $packet = $this->getMovePacket($location);
+
+        foreach ($this->getViewerList() as $viewer) {
+            $viewer->getNetworkSession()->sendDataPacket($packet);
+        }
+    }
+
+    public function getMovePacket(Location $location): ClientboundPacket
+    {
         if ($this->isHuman()) {
             $packet = MovePlayerPacket::create($this->actorRID,
                 $location->asVector3()->add(0, 1.6, 0),
@@ -227,9 +238,7 @@ abstract class SpawnAble implements ISpawnAble
             );
         }
 
-        foreach ($this->getViewerList() as $viewer) {
-            $viewer->getNetworkSession()->sendDataPacket($packet);
-        }
+        return $packet;
     }
 
     public function hide(Player $player): void
