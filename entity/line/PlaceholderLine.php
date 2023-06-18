@@ -22,17 +22,9 @@ class PlaceholderLine extends Line
     {
         $this->placeholder = $placeholder;
 
-        foreach ($this->viewerList as $viewer) {
-            if (!is_null($viewer)) {
-                $this->render($viewer);
-            }
+        foreach ($this->getViewerList() as $viewer) {
+            $this->render($viewer);
         }
-    }
-
-    public function show(Player $player): void
-    {
-        parent::show($player);
-        $this->render($player);
     }
 
     public function render(Player $player): void
@@ -43,5 +35,11 @@ class PlaceholderLine extends Line
         $this->updateMetadataForPlayer([
             EntityMetadataProperties::NAMETAG => new StringMetadataProperty(TextFormat::colorize($output))
         ], $player);
+    }
+
+    public function show(Player $player): void
+    {
+        parent::show($player);
+        $this->render($player);
     }
 }

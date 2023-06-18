@@ -11,6 +11,8 @@ use pocketmine\entity\Location;
 use pocketmine\network\mcpe\convert\LegacySkinAdapter;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
+use pocketmine\network\mcpe\protocol\ClientboundPacket;
+use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
@@ -41,19 +43,16 @@ abstract class SpawnAble implements ISpawnAble
 
     protected AttributeSettings $attributeSettings;
     protected ?HumanAttributes $humanSettings;
-
-    /**
-     * @var Player[]
-     */
-    protected array $viewerList = [];
-
     protected int $actorRID;
-
     /**
      * @var MetadataProperty[]
      * @phpstan-var array<int, MetadataProperty>
      */
     protected array $mergeMetadataList = [];
+    /**
+     * @var Player[]
+     */
+    private array $viewerList = [];
 
     public function __construct(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes)
     {
@@ -87,11 +86,19 @@ abstract class SpawnAble implements ISpawnAble
      */
     public function updateMetadata(array $metadata): void
     {
-        foreach ($this->viewerList as $viewer) {
-            if (!is_null($viewer)) {
-                $this->updateMetadataForPlayer($metadata, $viewer);
-            }
+        foreach ($this->getViewerList() as $viewer) {
+            $this->updateMetadataForPlayer($metadata, $viewer);
         }
+    }
+
+    /**
+     * @return Player[]
+     */
+    public function getViewerList(): array
+    {
+        return array_filter($this->viewerList, function ($value) {
+            return !is_null($value);
+        });
     }
 
     public function updateMetadataForPlayer(array $metadata, Player $player): void
@@ -198,6 +205,15 @@ abstract class SpawnAble implements ISpawnAble
     {
         $this->attributeSettings->location($location);
 
+        $packet = $this->getMovePacket($location);
+
+        foreach ($this->getViewerList() as $viewer) {
+            $viewer->getNetworkSession()->sendDataPacket($packet);
+        }
+    }
+
+    public function getMovePacket(Location $location): ClientboundPacket
+    {
         if ($this->isHuman()) {
             $packet = MovePlayerPacket::create($this->actorRID,
                 $location->asVector3()->add(0, 1.6, 0),
@@ -223,11 +239,7 @@ abstract class SpawnAble implements ISpawnAble
             );
         }
 
-        foreach ($this->viewerList as $viewer) {
-            if (!is_null($viewer)) {
-                $viewer->getNetworkSession()->sendDataPacket($packet);
-            }
-        }
+        return $packet;
     }
 
     public function hide(Player $player): void
@@ -236,14 +248,6 @@ abstract class SpawnAble implements ISpawnAble
         $player->getNetworkSession()->sendDataPacket($packet);
 
         unset($this->viewerList[array_search($player, $this->viewerList, true)]);
-    }
-
-    /**
-     * @return Player[]
-     */
-    public function getViewerList(): array
-    {
-        return $this->viewerList;
     }
 
     public function getActorRID(): int
