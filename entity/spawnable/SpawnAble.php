@@ -40,19 +40,16 @@ abstract class SpawnAble implements ISpawnAble
 
     protected AttributeSettings $attributeSettings;
     protected ?HumanAttributes $humanSettings;
-
-    /**
-     * @var Player[]
-     */
-    protected array $viewerList = [];
-
     protected int $actorRID;
-
     /**
      * @var MetadataProperty[]
      * @phpstan-var array<int, MetadataProperty>
      */
     protected array $mergeMetadataList = [];
+    /**
+     * @var Player[]
+     */
+    private array $viewerList = [];
 
     public function __construct(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes)
     {
@@ -86,11 +83,19 @@ abstract class SpawnAble implements ISpawnAble
      */
     public function updateMetadata(array $metadata): void
     {
-        foreach ($this->viewerList as $viewer) {
-            if (!is_null($viewer)) {
-                $this->updateMetadataForPlayer($metadata, $viewer);
-            }
+        foreach ($this->getViewerList() as $viewer) {
+            $this->updateMetadataForPlayer($metadata, $viewer);
         }
+    }
+
+    /**
+     * @return Player[]
+     */
+    public function getViewerList(): array
+    {
+        return array_filter($this->viewerList, function ($value) {
+            return !is_null($value);
+        });
     }
 
     public function updateMetadataForPlayer(array $metadata, Player $player): void
@@ -222,10 +227,8 @@ abstract class SpawnAble implements ISpawnAble
             );
         }
 
-        foreach ($this->viewerList as $viewer) {
-            if (!is_null($viewer)) {
-                $viewer->getNetworkSession()->sendDataPacket($packet);
-            }
+        foreach ($this->getViewerList() as $viewer) {
+            $viewer->getNetworkSession()->sendDataPacket($packet);
         }
     }
 
@@ -235,14 +238,6 @@ abstract class SpawnAble implements ISpawnAble
         $player->getNetworkSession()->sendDataPacket($packet);
 
         unset($this->viewerList[array_search($player, $this->viewerList, true)]);
-    }
-
-    /**
-     * @return Player[]
-     */
-    public function getViewerList(): array
-    {
-        return $this->viewerList;
     }
 
     public function getActorRID(): int

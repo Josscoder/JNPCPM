@@ -36,7 +36,7 @@ class NPCFactory
 
     public function store(NPC $npc): void
     {
-        $this->npcList[] = $npc;
+        $this->npcList[$npc->getActorRID()] = $npc;
     }
 
     public function hideWorldNPCS(World $world, Player $player): void
@@ -48,7 +48,7 @@ class NPCFactory
 
     public function filterByWorld(World $world): array
     {
-        return $this->filter(function ($npc, $index) use ($world) {
+        return $this->filter(function ($npc) use ($world) {
             return $npc->getAttributeSettings()->getLocation()->getWorld() === $world;
         });
     }
@@ -59,7 +59,7 @@ class NPCFactory
      */
     public function filter(callable $callable): array
     {
-        return array_filter($this->npcList, $callable, ARRAY_FILTER_USE_BOTH);
+        return array_filter($this->npcList, $callable);
     }
 
     public function showWorldNPCS(World $world, Player $player): void
@@ -71,25 +71,25 @@ class NPCFactory
 
     public function handleNPCController(int $actorRID, Player $player): void
     {
-        $npcs = $this->filter(function ($npc, $index) use ($actorRID) {
-            return $npc->getActorRID() === $actorRID;
-        });
-
-        if (empty($npcs)) {
+        if (!isset($this->npcList[$actorRID])) {
             return;
         }
 
-        /** @var NPC $npcToHandle */
-        $npcToHandle = array_values($npcs)[0];
-        if (is_null($npcToHandle)) {
+        $npc = $this->npcList[$actorRID];
+        if (is_null($npc)) {
             return;
         }
 
-        $controller = $npcToHandle->getAttributeSettings()->getController();
+        $controller = $npc->getAttributeSettings()->getController();
         if (is_null($controller)) {
             return;
         }
 
-        $controller($npcToHandle, $player);
+        $controller($npc, $player);
+    }
+
+    public function removeNPC(int $actorRID): void
+    {
+        unset($this->npcList[$actorRID]);
     }
 }

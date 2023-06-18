@@ -35,6 +35,29 @@ class NPC extends SpawnAble
         return $npc;
     }
 
+    public function showToWorldPlayers(): void
+    {
+        $location = $this->attributeSettings->getLocation();
+        if ($location->isValid()) {
+            foreach ($location->getWorld()->getPlayers() as $player) {
+                $this->show($player);
+            }
+        }
+    }
+
+    public function show(Player $player): void
+    {
+        parent::show($player);
+        $this->spawnLines($player);
+    }
+
+    public function spawnLines(Player $player): void
+    {
+        foreach ($this->tagSettings->getLines() as $line) {
+            $line->show($player);
+        }
+    }
+
     public function lookAt(Vector3 $vector, true $update): void
     {
         $location = $this->attributeSettings->getLocation();
@@ -72,23 +95,12 @@ class NPC extends SpawnAble
         }
     }
 
-    public function show(Player $player): void
+    public function reloadLines(): void
     {
-        parent::show($player);
-        $this->spawnLines($player);
-    }
-
-    public function spawnLines(Player $player): void
-    {
-        foreach ($this->tagSettings->getLines() as $line) {
-            $line->show($player);
+        foreach ($this->getViewerList() as $viewer) {
+            $this->hideLines($viewer);
+            $this->spawnLines($viewer);
         }
-    }
-
-    public function hide(Player $player): void
-    {
-        parent::hide($player);
-        $this->hideLines($player);
     }
 
     public function hideLines(Player $player): void
@@ -98,14 +110,19 @@ class NPC extends SpawnAble
         }
     }
 
-    public function reloadLines(): void
+    public function hide(Player $player): void
     {
-        foreach ($this->viewerList as $viewer) {
-            if (!is_null($viewer)) {
-                $this->hideLines($viewer);
-                $this->spawnLines($viewer);
-            }
+        parent::hide($player);
+        $this->hideLines($player);
+    }
+
+    public function remove(): void
+    {
+        foreach ($this->getViewerList() as $viewer) {
+            $this->hide($viewer);
         }
+
+        NPCFactory::getInstance()->removeNPC($this->actorRID);
     }
 
     public function getTagSettings(): TagSettings
