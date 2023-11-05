@@ -9,6 +9,7 @@ use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 
 abstract class Line extends SpawnAble
 {
+
     private int $separator;
     private NPC $linkedNPC;
 
@@ -17,7 +18,8 @@ abstract class Line extends SpawnAble
         parent::__construct(AttributeSettings::builder()
             ->networkId(EntityIds::CREEPER)
             ->boundingBoxWidth(0)
-            ->scale(0.004)
+            ->scale(0.004),
+            null
         );
 
         $this->separator = $separator;
