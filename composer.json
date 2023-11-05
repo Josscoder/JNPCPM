@@ -2,6 +2,7 @@
   "name": "josscoder/jnpc",
   "description": "Library to manage npcs on your PocketMine server",
   "type": "library",
+  "license": "Apache-2.0",
   "autoload": {
     "psr-4": {
       "JNPC\\": "/"
