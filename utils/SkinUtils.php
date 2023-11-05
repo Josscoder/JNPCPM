@@ -6,7 +6,7 @@ use JNPC\exception\NPCException;
 use JsonException;
 use pocketmine\entity\Skin;
 
-class NPCSkinUtils
+class SkinUtils
 {
 
     /**

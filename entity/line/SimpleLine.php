@@ -8,7 +8,6 @@ use pocketmine\utils\TextFormat;
 
 class SimpleLine extends Line
 {
-
     private string $name;
 
     public function __construct(string $name, int $separator = 1)

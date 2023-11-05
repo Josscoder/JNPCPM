@@ -5,6 +5,7 @@ namespace JNPC\settings;
 use JNPC\entity\line\Line;
 use JNPC\entity\npc\NPC;
 use pocketmine\entity\Location;
+use pocketmine\math\Vector3;
 
 class TagSettings
 {
@@ -14,9 +15,7 @@ class TagSettings
      * @var Line[]
      */
     private array $lines = [];
-
     private float $height = 1.8;
-
     private NPC $linkedNPC;
 
     public function addLine(Line $line): self
@@ -39,18 +38,16 @@ class TagSettings
     public function readjust(Location $location): void
     {
         $attributeSettings = $this->linkedNPC->getAttributeSettings();
+        $npcLocation = $attributeSettings->getLocation();
+        if (is_null($npcLocation)) {
+            return;
+        }
 
         $i = 0;
         foreach ($this->lines as $line) {
-            $lineLoc = null;
+            $lineLocation = $this->iterateLocation($i, $location, $line);
 
-            if ($i == 0) {
-                $lineLoc = $location->add(0, $this->height, 0);
-            } else {
-                $lineLoc = $this->getLine($i - 1)->getAttributeSettings()->getLocation()->add(0, (self::ONE_BREAK_LINE * $line->getSeparator()), 0);
-            }
-
-            $line->move(Location::fromObject($lineLoc, $attributeSettings->getLocation()->getWorld()));
+            $line->move(Location::fromObject($lineLocation, $npcLocation->getWorld()));
 
             ++$i;
         }
@@ -63,23 +60,21 @@ class TagSettings
 
     public function adjust(): void
     {
-        $this->lines = array_reverse($this->lines);
-
         $attributeSettings = $this->linkedNPC->getAttributeSettings();
+        $npcLocation = $attributeSettings->getLocation();
+        if (is_null($npcLocation)) {
+            return;
+        }
+
+        $this->lines = array_reverse($this->lines);
 
         $i = 0;
         foreach ($this->lines as $line) {
             $line->setLinkedNPC($this->linkedNPC);
 
-            $location = null;
+            $location = $this->iterateLocation($i, $npcLocation, $line);
 
-            if ($i == 0) {
-                $location = $attributeSettings->getLocation()->add(0, $this->height, 0);
-            } else {
-                $location = $this->getLine($i - 1)->getAttributeSettings()->getLocation()->add(0, (self::ONE_BREAK_LINE * $line->getSeparator()), 0);
-            }
-
-            $line->getAttributeSettings()->location(Location::fromObject($location, $attributeSettings->getLocation()->getWorld()));
+            $line->getAttributeSettings()->location(Location::fromObject($location, $npcLocation->getWorld()));
 
             ++$i;
         }
@@ -96,5 +91,26 @@ class TagSettings
     public function getLines(): array
     {
         return $this->lines;
+    }
+
+    /**
+     * @param int $i
+     * @param Location $npcLocation
+     * @param Line $line
+     * @return Vector3|null
+     */
+    private function iterateLocation(int $i, Location $npcLocation, Line $line): ?Vector3
+    {
+        $location = null;
+
+        if ($i == 0) {
+            $location = $npcLocation->add(0, $this->height, 0);
+        } else {
+            $lastLineLocation = $this->getLine($i - 1)->getAttributeSettings()->getLocation();
+            if (!is_null($lastLineLocation)) {
+                $location = $lastLineLocation->add(0, (self::ONE_BREAK_LINE * $line->getSeparator()), 0);
+            }
+        }
+        return $location;
     }
 }

@@ -38,7 +38,6 @@ use Ramsey\Uuid\Uuid;
 
 abstract class SpawnAble implements ISpawnAble
 {
-
     protected AttributeSettings $attributeSettings;
     protected ?HumanAttributes $humanSettings;
     protected int $actorRID;
@@ -52,7 +51,7 @@ abstract class SpawnAble implements ISpawnAble
      */
     private array $viewerList = [];
 
-    public function __construct(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes)
+    public function __construct(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes = null)
     {
         $this->attributeSettings = $attributeSettings;
 
@@ -107,6 +106,11 @@ abstract class SpawnAble implements ISpawnAble
 
     public function show(Player $player): void
     {
+        $location = $this->attributeSettings->getLocation();
+        if (is_null($location)) {
+            return;
+        }
+
         $metadata = [
             EntityMetadataProperties::NAMETAG => new StringMetadataProperty(''),
             EntityMetadataProperties::ALWAYS_SHOW_NAMETAG => new ByteMetadataProperty(1),
@@ -127,8 +131,6 @@ abstract class SpawnAble implements ISpawnAble
         foreach ($this->mergeMetadataList as $key => $value) {
             $metadata[$key] = $value;
         }
-
-        $location = $this->attributeSettings->getLocation();
 
         if ($this->isHuman()) {
             $uuid = Uuid::uuid4();
@@ -153,7 +155,7 @@ abstract class SpawnAble implements ISpawnAble
                 $location->getPitch(),
                 $location->getYaw(),
                 $location->getYaw(),
-                new ItemStackWrapper(0, ItemStack::null()),
+                new ItemStackWrapper(0, $this->humanSettings->getHandItem() ?? ItemStack::null()),
                 GameMode::SURVIVAL,
                 $metadata,
                 new PropertySyncData([], []),

@@ -14,7 +14,6 @@ use pocketmine\player\Player;
 
 class DefaultNPCListener implements NPCListener
 {
-
     public function onJoin(PlayerJoinEvent $event): void
     {
         $player = $event->getPlayer();

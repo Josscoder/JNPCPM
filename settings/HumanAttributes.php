@@ -7,17 +7,15 @@ use pocketmine\item\Item;
 
 class HumanAttributes
 {
-
-    private Skin $skin;
-
-    private Item $handItem;
+    private ?Skin $skin = null;
+    private ?Item $handItem = null;
 
     public static function builder(): HumanAttributes
     {
         return new HumanAttributes();
     }
 
-    public function getSkin(): Skin
+    public function getSkin(): ?Skin
     {
         return $this->skin;
     }
@@ -28,7 +26,7 @@ class HumanAttributes
         return $this;
     }
 
-    public function getHandItem(): Item
+    public function getHandItem(): ?Item
     {
         return $this->handItem;
     }

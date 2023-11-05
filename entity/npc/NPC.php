@@ -13,7 +13,6 @@ use pocketmine\player\Player;
 
 class NPC extends SpawnAble
 {
-
     private TagSettings $tagSettings;
 
     public function __construct(AttributeSettings $attributeSettings, ?HumanAttributes $humanAttributes)
@@ -38,7 +37,7 @@ class NPC extends SpawnAble
     public function showToWorldPlayers(): void
     {
         $location = $this->attributeSettings->getLocation();
-        if (!$location->isValid()) {
+        if (is_null($location) || !$location->isValid()) {
             return;
         }
 
@@ -63,6 +62,9 @@ class NPC extends SpawnAble
     public function lookAt(Vector3 $vector, true $update): void
     {
         $location = $this->lookVector($vector);
+        if (is_null($location)) {
+            return;
+        }
 
         if ($update) {
             $this->move($location);
@@ -71,9 +73,12 @@ class NPC extends SpawnAble
         }
     }
 
-    public function lookVector(Vector3 $vector): Location
+    public function lookVector(Vector3 $vector): ?Location
     {
         $location = $this->attributeSettings->getLocation();
+        if (is_null($location)) {
+            return null;
+        }
 
         $horizontal = sqrt(($vector->x - $location->x) ** 2 + ($vector->z - $location->z) ** 2);
         $vertical = $vector->y - $location->y;
@@ -96,6 +101,9 @@ class NPC extends SpawnAble
     public function move(Location $location): void
     {
         $oldLocation = $this->attributeSettings->getLocation();
+        if (is_null($oldLocation)) {
+            return;
+        }
 
         parent::move($location);
 
@@ -107,6 +115,10 @@ class NPC extends SpawnAble
     public function keepLooking(Vector3 $vector, Player $player): void
     {
         $location = $this->lookVector($vector);
+        if (is_null($location)) {
+            return;
+        }
+
         $packet = $this->getMovePacket($location);
         $player->getNetworkSession()->sendDataPacket($packet);
     }

@@ -7,23 +7,14 @@ use pocketmine\entity\Location;
 
 class AttributeSettings
 {
-
     private string $networkId;
-
     private string $behaviorId = '';
-
     private bool $customEntity = false;
-
-    private Location $location;
-
+    private ?Location $location = null;
     private float $scale = 1.0;
-
     private ?Closure $controller = null;
-
     private bool $keepLooking = false;
-
     private ?float $boundingBoxHeight = null;
-
     private ?float $boundingBoxWidth = null;
 
     public static function builder(): AttributeSettings
@@ -64,7 +55,7 @@ class AttributeSettings
         return $this;
     }
 
-    public function getLocation(): Location
+    public function getLocation(): ?Location
     {
         return $this->location;
     }

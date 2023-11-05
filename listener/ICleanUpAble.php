@@ -9,8 +9,6 @@ use pocketmine\event\player\PlayerQuitEvent;
 interface ICleanUpAble
 {
     public function onJoin(PlayerJoinEvent $event): void;
-
     public function onQuit(PlayerQuitEvent $event): void;
-
     public function onLevelChange(EntityTeleportEvent $event): void;
 }
