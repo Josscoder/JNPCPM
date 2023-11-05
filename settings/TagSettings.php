@@ -67,22 +67,21 @@ class TagSettings
 
         $attributeSettings = $this->linkedNPC->getAttributeSettings();
 
-        $i = 0;
-        foreach ($this->lines as $line) {
+        foreach ($this->lines as $index => $line) {
             $line->setLinkedNPC($this->linkedNPC);
 
             $location = null;
 
-            if ($i == 0) {
+            if ($index === 0) {
                 $location = $attributeSettings->getLocation()->add(0, $this->height, 0);
             } else {
-                $location = $this->getLine($i - 1)->getAttributeSettings()->getLocation()->add(0, (self::ONE_BREAK_LINE * $line->getSeparator()), 0);
+                $previousLine = $this->lines[$index - 1];
+                $location = $previousLine->getAttributeSettings()->getLocation()->add(0, (self::ONE_BREAK_LINE * $line->getSeparator()), 0);
             }
 
             $line->getAttributeSettings()->location(Location::fromObject($location, $attributeSettings->getLocation()->getWorld()));
-
-            ++$i;
         }
+
     }
 
     public function setLinkedNPC(NPC $linkedNPC): void
