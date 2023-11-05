@@ -32,5 +32,4 @@ class CustomEntityUtils
             ->setString("bid", $behaviourId));
         $packet->identifiers = new CacheableNbt($root);
     }
-
 }
