@@ -93,13 +93,6 @@ class NPC extends SpawnAble
         return $location;
     }
 
-    public function keepLooking(Vector3 $vector, Player $player): void
-    {
-        $location = $this->lookVector($vector);
-        $packet = $this->getMovePacket($location);
-        $player->getNetworkSession()->sendDataPacket($packet);
-    }
-
     public function move(Location $location): void
     {
         $oldLocation = $this->attributeSettings->getLocation();
@@ -109,6 +102,13 @@ class NPC extends SpawnAble
         if ($location->getX() != $oldLocation->getX() || $location->getY() != $oldLocation->getY() || $location->getZ() != $oldLocation->getZ()) {
             $this->tagSettings->readjust($location);
         }
+    }
+
+    public function keepLooking(Vector3 $vector, Player $player): void
+    {
+        $location = $this->lookVector($vector);
+        $packet = $this->getMovePacket($location);
+        $player->getNetworkSession()->sendDataPacket($packet);
     }
 
     public function reloadLines(): void

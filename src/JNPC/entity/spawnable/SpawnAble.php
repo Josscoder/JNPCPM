@@ -8,11 +8,10 @@ use JNPC\utils\CustomEntityUtils;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
 use pocketmine\entity\Location;
-use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
+use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\ClientboundPacket;
-use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
@@ -139,7 +138,7 @@ abstract class SpawnAble implements ISpawnAble
                     $uuid,
                     $this->actorRID,
                     $uuid->toString(),
-                    SkinAdapterSingleton::get()->toSkinData($this->humanSettings->getSkin())
+                    TypeConverter::getInstance()->getSkinAdapter()->toSkinData($this->humanSettings->getSkin())
                 )
             ]);
             $player->getNetworkSession()->sendDataPacket($playerListAddPacket);

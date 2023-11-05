@@ -9,7 +9,6 @@ use pocketmine\plugin\PluginBase;
 
 class JNPC
 {
-
     public static function init(PluginBase $pluginBase = null, Listener $NPCListener = new DefaultNPCListener()): void
     {
         NPCFactory::make();
@@ -20,5 +19,4 @@ class JNPC
 
         $pluginBase->getServer()->getPluginManager()->registerEvents($NPCListener, $pluginBase);
     }
-
 }
