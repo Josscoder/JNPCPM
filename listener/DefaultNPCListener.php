@@ -72,7 +72,7 @@ class DefaultNPCListener implements NPCListener
         $to = $event->getTo();
 
         $distance = $from->distance($to);
-        if ($distance < 1.0 || $distance > 20) {
+        if ($distance > 20) {
             return;
         }
 
@@ -83,7 +83,7 @@ class DefaultNPCListener implements NPCListener
                 continue;
             }
 
-            $npc->keepLooking($player->getLocation()->asVector3(), $player);
+            $npc->keepLooking($player);
         }
     }
 }

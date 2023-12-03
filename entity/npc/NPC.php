@@ -8,6 +8,7 @@ use JNPC\settings\AttributeSettings;
 use JNPC\settings\HumanAttributes;
 use JNPC\settings\TagSettings;
 use pocketmine\entity\Location;
+use pocketmine\math\Vector2;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 
@@ -75,17 +76,10 @@ class NPC extends SpawnAble
     {
         $location = $this->attributeSettings->getLocation();
 
-        $horizontal = sqrt(($vector->x - $location->x) ** 2 + ($vector->z - $location->z) ** 2);
-        $vertical = $vector->y - $location->y;
-        $pitch = -atan2($vertical, $horizontal) / M_PI * 180;
-
-        $xDist = $vector->x - $location->x;
-        $zDist = $vector->z - $location->z;
-
-        $yaw = atan2($zDist, $xDist) / M_PI * 180 - 90;
-        if ($yaw < 0) {
-            $yaw += 360.0;
-        }
+        $angle = atan2($vector->getZ() - $location->getZ(), $vector->getX() - $location->getX());
+        $yaw = (($angle * 180) / M_PI) - 90;
+        $angle = atan2((new Vector2($location->getX(), $location->getZ()))->distance(new Vector2($vector->getX(), $vector->getZ())), $vector->getY() - $location->getY());
+        $pitch = (($angle * 180) / M_PI) - 90;
 
         $location->yaw = $yaw;
         $location->pitch = $pitch;
@@ -104,9 +98,9 @@ class NPC extends SpawnAble
         }
     }
 
-    public function keepLooking(Vector3 $vector, Player $player): void
+    public function keepLooking(Player $player): void
     {
-        $location = $this->lookVector($vector);
+        $location = $this->lookVector($player->getLocation());
         $packet = $this->getMovePacket($location);
         $player->getNetworkSession()->sendDataPacket($packet);
     }
