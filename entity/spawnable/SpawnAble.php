@@ -95,7 +95,7 @@ abstract class SpawnAble implements ISpawnAble
     public function getViewerList(): array
     {
         return array_filter($this->viewerList, function ($value) {
-            return !is_null($value);
+            return !is_null($value) && $value->isOnline();
         });
     }
 
