@@ -48,8 +48,9 @@ class NPCFactory
 
     public function filterByWorld(World $world): array
     {
-        return $this->filter(function ($npc) use ($world) {
-            return $npc->getAttributeSettings()->getLocation()->getWorld() === $world;
+        return $this->filter(function (NPC $npc) use ($world) {
+            $location = $npc->getAttributeSettings()->getLocation();
+            return $location->isValid() && $location->getWorld() === $world;
         });
     }
 

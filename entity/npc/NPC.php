@@ -75,6 +75,9 @@ class NPC extends SpawnAble
     public function lookVector(Vector3 $vector): Location
     {
         $location = $this->attributeSettings->getLocation();
+        if (!$location->isValid()) {
+            return $location;
+        }
 
         $angle = atan2($vector->getZ() - $location->getZ(), $vector->getX() - $location->getX());
         $yaw = (($angle * 180) / M_PI) - 90;
@@ -90,6 +93,9 @@ class NPC extends SpawnAble
     public function move(Location $location): void
     {
         $oldLocation = $this->attributeSettings->getLocation();
+        if (!$oldLocation->isValid() || !$location->isValid()) {
+            return;
+        }
 
         parent::move($location);
 
